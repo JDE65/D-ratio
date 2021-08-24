@@ -5,7 +5,7 @@ This repository is linked to a paper still in preparation. A larger repository f
 D-ratio or 'Discriminant ratio' is a new performance ratio that measures the ability of an algorithm that predicts asset return (or asset prices) to efficiently improve the expected return and/or reduce the risk.
 It compares the performance of the algorithm with the simple Buy & Hold strategy.
 
-The risk of a position is measured by the Value-at-Risk modified  with the Cornish-Fisher expansion (CF-VaR). The CF-VaR is able to cope with non-Gaussian distributions whereas the standard VaR assumes normally distributed returns.
+The risk of an investment is measured by the Value-at-Risk modified with the Cornish-Fisher expansion (CF-VaR). The CF-VaR is able to cope with non-Gaussian distributions whereas the standard VaR assumes normally distributed returns.
 The return is the annualized return of the AI strategy compared to the annual return of the Buy & Hold strategy.
 
 The D ratio can also be decomposed:
