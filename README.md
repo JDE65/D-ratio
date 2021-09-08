@@ -1,6 +1,6 @@
 # D-ratio
-D ratio is a performance metric to analyse the efficiency of algorithms that predict asset return or asset prices
-This repository is linked to a paper still in preparation. A larger repository for comparing algorithms predicting financial asset return or price will follow where D ratio will be applied.
+D ratio is a performance metric to analyse the efficiency of algorithms that predict asset return or asset prices.
+This repository is linked to a paper still in preparation and should be understood with the paper. A larger repository for comparing algorithms predicting financial asset return or price will follow where D ratio will be applied.
 
 D-ratio or 'Discriminant ratio' is a new performance ratio that measures the ability of an algorithm that predicts asset return (or asset prices) to efficiently improve the expected return and/or reduce the risk.
 It compares the performance of the algorithm with the simple Buy & Hold strategy.
