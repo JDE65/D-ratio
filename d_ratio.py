@@ -3,8 +3,8 @@
 Created on Sun Aug 15, 16:50 2021
 
 Utility functions that computes the "Discriminant ratio" or "D ratio"
-This file presents an abstract of the code used for prepare a publication
-Use without prior reading the article might be misleading or inadequate    
+This file presents an abstract of the code used for preparing a publication to come.
+Use of the code without prior reading the article might be misleading or inadequate.    
 
 @author: JDE65 (Github)
 j.dessain@navagne.com   ///  j.dessain@ieseg.fr
@@ -41,7 +41,7 @@ from scipy.stats import norm, skew, kurtosis, shapiro
 ###=== 2. Inputs for all functions include:
 #   1. log_return = numpy array of size (n, ) with the daily log return of a financial asset
 #   2. asset_value = reference for VaR computation. Here set @ 100
-#   3. confid = confidence level for Cornish-Fisher Value-at-Risk. Usually 1% or 5% - here set @ 1%
+#   3. confid = confidence interval for Cornish-Fisher Value-at-Risk. Usually 1% or 5% - here set @ 1%
 #   4.a return_bh  = numpy array of size (n, ) with the daily log return of the B&H strategy
 #   4.b return_pred = numpy array of size (n, ) with the daily log return of a financial asset
 
@@ -59,6 +59,13 @@ from scipy.stats import norm, skew, kurtosis, shapiro
 ### 4.1 D ratio
 def get_d(return_bh, return_pred):
     d_ratios = np.zeros((7, 3))
+    ### Array with output :        0 = d_ratio, d_ratio1 for first period & d_ratio2 for 2nd period
+                                ## 1 = roi_bh : RoI for BH for full period, period 1 and period 2
+                                ## 2 = roi_pred RoI for pred for full period, period 1 and period 2
+                                ## 3 = varbh : VaR of BH for full period, period 1 and period 2
+                                ## 4 = varpred : VaR of pred for full period, period 1 and period 2
+                                ## 5 = rtv_bh : Return-to-VaR of BH for full period, period 1 and period 2
+                                ## 6 = rtv_pred : Return-to-VaR of pred for full period, period 1 and period 2
     period1 = int(len(return_bh)/2)  ## mid-period for computing D ratio stability
     cf_exp, varbh, _ = risk_cf_exp_var(return_bh[1:, ], 100, 0.01)
     cf_exp, varbh_1, _ = risk_cf_exp_var(return_bh[1:period1, ], 100, 0.01)   ## CF-VaR BH period 1
@@ -66,24 +73,27 @@ def get_d(return_bh, return_pred):
     cf_exp, varpred, _ = risk_cf_exp_var(return_pred[1:, ], 100, 0.01)  
     cf_exp, varpred_1, _ = risk_cf_exp_var(return_pred[1:period1, ], 100, 0.01)    ## CF-VaR Pred period 1
     cf_exp, varpred_2, _ = risk_cf_exp_var(return_pred[period1:, ], 100, 0.01)    ## CF-VaR Pred period 2
+    # storing annualized returns B&H and predicted
     d_ratios[1, 0] = np.mean(return_bh[1:, ], axis = 0) * 252 
     d_ratios[1, 1] = np.mean(return_bh[1:period1, ], axis = 0) * 252 
     d_ratios[1, 2] = np.mean(return_bh[period1:, ], axis = 0) * 252
     d_ratios[2, 0] = np.mean(return_pred[1:, ], axis = 0) * 252
     d_ratios[2, 1] = np.mean(return_pred[1:period1, ], axis = 0) * 252
     d_ratios[2, 2] = np.mean(return_pred[period1:, ], axis = 0) * 252 
+    # storing CF-VaR B&H and predicted
     d_ratios[3, 0] = varbh
     d_ratios[3, 1] = varbh_1
     d_ratios[3, 2] = varbh_2
     d_ratios[4, 0] = varpred
     d_ratios[4, 1] = varpred_1
     d_ratios[4, 2] = varpred_2
+    # storing return-to VaR B&H and predicted
     d_ratios[5, 0] = d_ratios[1, 0] / -d_ratios[3, 0]       ## rtv_bh
     d_ratios[5, 1] = d_ratios[1, 1] / -d_ratios[3, 1]       ## rtv_bh1
-    d_ratios[5, 2] = d_ratios[1, 2] / -varbh_2              ## rtv_bh2
-    d_ratios[6, 0] = d_ratios[2, 0] / -varpred              ## rtv_pred
-    d_ratios[6, 1] = d_ratios[2, 1] / -varpred_1            ## rtv_pred1
-    d_ratios[6, 2] = d_ratios[2, 2] / -varpred_2            ## rtv_pred2
+    d_ratios[5, 2] = d_ratios[1, 2] / -d_ratios[3, 2]       ## rtv_bh2
+    d_ratios[6, 0] = d_ratios[2, 0] / -d_ratios[4, 0]       ## rtv_pred
+    d_ratios[6, 1] = d_ratios[2, 1] / -d_ratios[4, 1]       ## rtv_pred1
+    d_ratios[6, 2] = d_ratios[2, 2] / -d_ratios[4, 2]       ## rtv_pred2
     ## Final step : compute D ratio = 1 + (rtv_pred - rtv_bh) / ABS(rtv_bh)
     d_ratios[0, 0] = 1 + (d_ratios[6, 0]  - d_ratios[5, 0]) / np.abs(d_ratios[5, 0])
     d_ratios[0, 1] = 1 + (d_ratios[6, 1]  - d_ratios[5, 1]) / np.abs(d_ratios[5, 1])
