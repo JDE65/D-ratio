@@ -3,7 +3,8 @@
 Created on Sun Aug 15, 16:50 2021
 
 Utility functions that computes the "Discriminant ratio" or "D-ratio"
-This file presents an abstract of the code used for preparing a publication submitted to peer-reviewed journal.
+This file presents an abstract of the code used for preparing a publication submitted to peer-reviewed journal
+and available on SSRN https://ssrn.com/abstract=3927058  
 Use of the code without prior reading the article might be misleading or inadequate.    
 
 @author: JDE65 (Github)
