@@ -95,7 +95,7 @@ def get_d(return_bh, return_pred):
     d_ratios[6, 0] = d_ratios[2, 0] / -d_ratios[4, 0]       ## rtv_pred
     d_ratios[6, 1] = d_ratios[2, 1] / -d_ratios[4, 1]       ## rtv_pred1
     d_ratios[6, 2] = d_ratios[2, 2] / -d_ratios[4, 2]       ## rtv_pred2
-    ## Final step : compute D ratio = 1 + (rtv_pred - rtv_bh) / ABS(rtv_bh)
+    ## Final step : compute D ratio = (1 + (RoI_pred - RoI_bh) / ABS(RoI_bh)) / (VaR_pred / VaR_bh)
     d_ratios[0, 0] = (1 + (d_ratios[2, 0]  - d_ratios[1, 0]) / np.abs(d_ratios[1, 0])) * (d_ratios[3, 0] / d_ratios[4, 0])
     d_ratios[0, 1] = (1 + (d_ratios[2, 1]  - d_ratios[1, 1]) / np.abs(d_ratios[1, 1])) * (d_ratios[3, 1] / d_ratios[4, 1])
     d_ratios[0, 2] = (1 + (d_ratios[2, 2]  - d_ratios[1, 2]) / np.abs(d_ratios[1, 2])) * (d_ratios[3, 2] / d_ratios[4, 2])
