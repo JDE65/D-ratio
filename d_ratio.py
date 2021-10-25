@@ -114,7 +114,7 @@ def risk_cf_exp_var(log_return, asset_value, confid):
     (mean, st_dev), (skew, kurt) = risk_skew_kurt(log_return)
     quantile = norm.ppf(confid)
     cf_exp = quantile + (quantile ** 2 - 1) * skew / 6 
-    + (quantile ** 3 - 3 * quantile) * (kurt - 3) / 24 
+    + (quantile ** 3 - 3 * quantile) * kurt / 24 
     - (2 * quantile ** 3 - 5 * quantile) * (skew ** 2) / 36
     cf_var = mean + st_dev * cf_exp
     cf_asset_value = asset_value * (1 + cf_var)
